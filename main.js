@@ -1,29 +1,34 @@
-function movieButtonClicked(movie_id) {
-    alert(movie_id);
+function moviesSearch() {
+    let data = getMoviesData()
+      .then(data => generateMoviesHTML(data))
+      .catch((err) => console.error(err));
 };
 
-const url = "https://gist.githubusercontent.com/jakerb/03e24f09aef4230eaeb98136e822599a/raw/a05b75ecd50d743ef1700a15cb3508d8a00541db/movies.json";        
-async function getData() {
-    const response = await fetch(url);
-    const data = await response.json();
+async function getMoviesData() {
+    const url = "https://gist.githubusercontent.com/jakerb/03e24f09aef4230eaeb98136e822599a/raw/a05b75ecd50d743ef1700a15cb3508d8a00541db/movies.json";        
+    if (localStorage.moviesData) {
+        return JSON.parse(localStorage.getItem("moviesData"));
+    } else {
+        const response = await fetch(url);
+        const data = await response.json();
+        return JSON.parse(localStorage.getItem("moviesData"));
+    };
+};
 
-    console.log("-----");
-    console.log(data[0]);
-    console.log("-----");
-    
+function generateMoviesHTML(data) {
     let movies_results = [];
     let search = document.getElementById("search").value;
     
     for (let i = 0; i < data.length; i++) {
         if (data[i]["title"].toLowerCase().includes(search.toLowerCase())) {
             movies_results.push(data[i]);
-        }
-    }
+        };
+    };
     
     let movies_html = "";
     for (let i = 0; i < movies_results.length; i++) {
         image = movies_results[i].info.image_url;
-
+    
         movies_html += `
             <div class="col">
                 <div class="card" style="width: 18rem;">
@@ -58,7 +63,6 @@ async function getData() {
                 </div>
             </div>
         `
-    };
-
+    };    
     document.getElementById("movies-list").innerHTML = movies_html;
 }
