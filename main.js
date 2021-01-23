@@ -30,7 +30,7 @@ function generateMoviesHTML(data) {
     };
     
     let movies_html = "";
-    for (let i = 0; i < movies_results.length; i++) {
+    for (let i = 0; i < (movies_results.length < 99 ? movies_results.length : 99); i++) {
         image = movies_results[i].info.image_url;
     
         movies_html += `
