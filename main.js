@@ -7,10 +7,14 @@ function moviesSearch() {
 async function getMoviesData() {
     const url = "https://gist.githubusercontent.com/jakerb/03e24f09aef4230eaeb98136e822599a/raw/a05b75ecd50d743ef1700a15cb3508d8a00541db/movies.json";        
     if (localStorage.moviesData) {
+        console.log("Found data in local storage.");
         return JSON.parse(localStorage.getItem("moviesData"));
     } else {
+        console.log("Fetching data...");
         const response = await fetch(url);
         const data = await response.json();
+        console.log("Data fetched.")
+        localStorage.setItem("moviesData", JSON.stringify(data));
         return JSON.parse(localStorage.getItem("moviesData"));
     };
 };
